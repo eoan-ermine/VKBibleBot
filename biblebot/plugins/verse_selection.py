@@ -16,7 +16,7 @@ def get_keyboard(book_id: int, chapter: int, page: int):
 
     for i, row in enumerate(rows):
         for verse in row:
-            keyboard.add_button(verse)
+            keyboard.add_button(verse, payload={"command": "verse", "book": book_id, "chapter": chapter, "verse": verse})
         keyboard.add_line()
 
     if page > 0:
