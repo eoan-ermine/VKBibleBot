@@ -21,7 +21,7 @@ def get_keyboard(book_id: int, page: int):
 
     if page > 0:
         keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY, payload={"command": "select_chapter", "book": book_id, "page": page - 1})
-    if len(rows) == ROWS_PER_PAGE:    
+    if len(rows) == ROWS_PER_PAGE and len(rows[-1]) == COLUMNS_PER_ROW:    
         keyboard.add_button("Далее", color=VkKeyboardColor.PRIMARY, payload={"command": "select_chapter", "book": book_id, "page": page + 1})
     return keyboard.get_keyboard()
 
