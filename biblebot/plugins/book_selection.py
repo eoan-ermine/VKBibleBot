@@ -11,19 +11,11 @@ def get_books():
     return r.json()["items"]
 
 def get_keyboard(books, page: int):
-    keyboard = VkKeyboard()
-    rows = utils.page(books, page, ROWS_PER_PAGE)
-
-    for i, row in enumerate(rows):
-        for book in row:
-            keyboard.add_button(book["long_name"], payload={"command": "select_chapter", "book": book["id"], "page": 0})
-        keyboard.add_line()
-
-    if page > 0:
-        keyboard.add_button("Назад", color=VkKeyboardColor.PRIMARY, payload={"command": "select_book", "page": page - 1})
-    if len(rows) == ROWS_PER_PAGE and len(rows[-1]) == COLUMNS_PER_ROW:    
-        keyboard.add_button("Далее", color=VkKeyboardColor.PRIMARY, payload={"command": "select_book", "page": page + 1})
-    return keyboard.get_keyboard()
+    return utils.get_selection_keyboard(
+        books, ROWS_PER_PAGE, COLUMNS_PER_ROW, page,
+        lambda x: x["long_name"], lambda x: {"command": "select_chapter", "book": x["id"], "page": 0},
+        lambda: {"command": "select_book", "page": page - 1}, lambda: {"command": "select_book", "page": page + 1}
+    )
 
 plugin = Plugin(
     name = t("Выбор книги"),
