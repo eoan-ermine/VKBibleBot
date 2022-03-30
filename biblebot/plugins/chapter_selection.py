@@ -15,8 +15,8 @@ def get_keyboard(book_id: int, page: int):
     rows = utils.page(list(utils.chunks(get_chapters(book_id), COLUMNS_PER_ROW)), page, ROWS_PER_PAGE)
 
     for i, row in enumerate(rows):
-        for button in row:
-            keyboard.add_button(button)
+        for chapter in row:
+            keyboard.add_button(chapter, payload={"command": "select_verse", "book": book_id, "chapter": chapter, "page": 0})
         keyboard.add_line()
 
     if page > 0:
