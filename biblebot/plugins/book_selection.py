@@ -1,24 +1,17 @@
 from kutana import Plugin, t
 import requests
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
+from biblebot import utils
 
 ROWS_PER_PAGE = 3
-
-def chunks(lst, n):
-    """Yield successive n-sized chunks from lst."""
-    for i in range(0, len(lst), n):
-        yield lst[i:i + n]
 
 def get_books():
     r = requests.get("http://212.109.198.115/books")
     return r.json()["items"]
 
-def get_page(books, page: int):
-    return books[page * ROWS_PER_PAGE:(page + 1) * ROWS_PER_PAGE]
-
 def get_keyboard(books, page: int):
     keyboard = VkKeyboard()
-    rows = get_page(books, page)
+    rows = utils.page(books, page, ROWS_PER_PAGE)
 
     for i, row in enumerate(rows):
         for button in row:
@@ -35,7 +28,7 @@ plugin = Plugin(
     name = t("Выбор книги"),
     description = t("Позволяет выбрать книгу")
 )
-books = list(chunks([e["long_name"] for e in get_books()], 3))
+books = list(utils.chunks([e["long_name"] for e in get_books()], 3))
 
 @plugin.on_commands(["начать"])
 async def __(msg, ctx):
