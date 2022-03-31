@@ -12,7 +12,7 @@ def get_books():
 
 def get_keyboard(books, page: int):
     return utils.get_selection_keyboard(
-        books, ROWS_PER_PAGE, COLUMNS_PER_ROW, page,
+        books, ROWS_PER_PAGE, COLUMNS_PER_ROW, page, lambda: f"Выбор книги — страница {page + 1}",
         lambda x: x["long_name"], lambda x: {"command": "select_chapter", "book": x["id"], "page": 0},
         lambda: {"command": "select_book", "page": page - 1}, lambda: {"command": "select_book", "page": page + 1}
     )

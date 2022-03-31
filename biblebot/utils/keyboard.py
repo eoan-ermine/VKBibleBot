@@ -1,9 +1,12 @@
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from biblebot import utils
 
-def get_selection_keyboard(chunks, rows_per_page, columns_per_row, page, item_content, item_payload, next_payload, prev_payload):
+def get_selection_keyboard(chunks, rows_per_page, columns_per_row, page, title, item_content, item_payload, next_payload, prev_payload):
     keyboard = VkKeyboard()
     rows = list(utils.page(chunks, page, rows_per_page))
+
+    keyboard.add_button(title(), color=VkKeyboardColor.POSITIVE)
+    keyboard.add_line()
 
     for row in rows:
         for item in row:
